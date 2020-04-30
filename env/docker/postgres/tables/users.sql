@@ -11,7 +11,7 @@ CREATE TABLE users (
     modified_at TIMESTAMP,
     deleted_at TIMESTAMP,
     CONSTRAINT "user_id" PRIMARY KEY (user_id)
-)
+);
 
 CREATE EXTENSION pgcrypto;
 

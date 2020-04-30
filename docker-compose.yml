@@ -58,9 +58,9 @@ services:
       networks:
         - project_network
 
- PostgreSQL
+ #PostgreSQL
     postgres:
-      container_name: backend_pizza_postgres
+      container_name: pizza_postgres
       build:
         context: ./env/docker/postgres
       volumes:
