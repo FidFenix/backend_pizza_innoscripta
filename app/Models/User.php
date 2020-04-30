@@ -11,7 +11,11 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+
 
 class User extends BaseModel implements
     AuthenticatableContract,
@@ -49,6 +53,22 @@ class User extends BaseModel implements
         'password', 'remember_token', 'email_verified_at', 'primary_role',
     ];
 
+    /** 
+    * Run migracioon
+    */
+    public function up()
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->bigIncrements('user_id');
+            $table->primary('user_id');
+            $table->index('user_id');
+            $table->string('name');
+            $table->string('email');
+            $table->string('password');
+            $table->string('primary_role');           
+            $table->timestamps();
+        });
+    }
     /**
      * Model's boot function
      */

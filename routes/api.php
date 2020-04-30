@@ -36,20 +36,24 @@ $api->version('v1', ['middleware' => ['api']], function (Router $api) {
      * Authentication
      */
     $api->group(['prefix' => 'auth'], function (Router $api) {
-        $api->group(['prefix' => 'jwt'], function (Router $api) {
+        $api->group(['prefix' => 'login'], function (Router $api) {
             $api->get('/token', 'App\Http\Controllers\Auth\AuthController@token');
+        });
+        $api->group(['prefix' => 'register'], function (Router $api) {
+            $api->post('/', 'App\Http\Controllers\UserController@createUser');
         });
     });
 
+    
     /*
-    $api->group(['prefix' => 'authe'], function (Router $api) {
+    $api->group(['prefix' => 'auth'], function (Router $api) {
         $api->group(['prefix' => 'jwt'], function (Router $api) {
             $api->get('/token', function(){
                 echo api;
             });
         });
-    });*/
-
+    });
+    */
     /*
      * Authenticated routes
      */
@@ -77,6 +81,7 @@ $api->version('v1', ['middleware' => ['api']], function (Router $api) {
             $api->patch('/{uuid}', 'App\Http\Controllers\UserController@patch');
             $api->delete('/{uuid}', 'App\Http\Controllers\UserController@delete');
         });
+        
 
         /*
          * Roles
