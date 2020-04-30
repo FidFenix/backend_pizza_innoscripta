@@ -1,0 +1,99 @@
+version: '3.7'
+
+services:
+
+# Workspace Container
+    workspace:
+      container_name: backend_pizza
+      build:
+        context: ./env/docker/workspace
+        args:
+          - PHP_VERSION=${PHP_VERSION}
+          - PHP_XDEBUG_ENABLE=${PHP_XDEBUG_ENABLE}
+          - PHP_XDEBUG_VERSION=${PHP_XDEBUG_VERSION}
+          - PHP_XDEBUG_REMOTE_CONNECT_BACK=${PHP_XDEBUG_REMOTE_CONNECT_BACK}
+          - COMPOSER_PROCESS_TIMEOUT=${COMPOSER_PROCESS_TIMEOUT}
+      volumes:
+        - ./:/var/www:cached
+        - ~/.ssh:/home/laradock/.ssh
+        - ~/.gitconfig:/home/laradock/.gitconfig
+        - ~/.config/composer:/home/laradock/.config/composer
+        - ~/.aws:/home/laradock/.aws
+      tty: true
+      networks:
+        - project_network
+
+# PHP-FPM
+    php-fpm:
+      container_name: backend_pizza_php_fpm
+      build:
+        context: ./env/docker/php-fpm
+        args:
+          - PHP_VERSION=${PHP_VERSION}
+          - PHP_XDEBUG_ENABLE=${PHP_XDEBUG_ENABLE}
+          - PHP_XDEBUG_VERSION=${PHP_XDEBUG_VERSION}
+          - PHP_XDEBUG_REMOTE_CONNECT_BACK=${PHP_XDEBUG_REMOTE_CONNECT_BACK}
+      volumes:
+        - ./:/var/www:cached
+      depends_on:
+        - workspace
+      networks:
+        - project_network
+
+# NGINX
+    nginx:
+      container_name: server_pizza_nginx
+      build:
+        context: ./env/docker/nginx
+      volumes:
+        - ./:/var/www:cached
+        - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
+      depends_on:
+        - php-fpm
+        - postgres
+      environment:
+        - HTTPS_METHOD=${HTTPS_METHOD}
+      ports:
+        - 80:80
+      networks:
+        - project_network
+
+ PostgreSQL
+    postgres:
+      container_name: backend_pizza_postgres
+      build:
+        context: ./env/docker/postgres
+      volumes:
+        - ${DATA_PATH_HOST}postgres:/var/lib/postgresql/data
+      environment:
+        - POSTGRES_DB=${POSTGRES_DB}
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      networks:
+        - project_network
+        
+# MySQL
+    mysql:
+      container_name: mysql_pizza_server
+      build:
+        context: ./env/docker/mysql
+      volumes:
+        - ${DATA_PATH_HOST}mysqlconf:/etc/mysql/conf.d/conf_mysql.cnf
+      environment:
+        - MYSQL_DATABASE=${MYSQL_DB}
+        - MYSQL_USER=${MYSQL_USER}
+        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      networks:
+        - project_network
+
+volumes:
+  mysql:
+    driver: "local"
+  postgres:
+    driver: "local"
+
+# Network configuration
+networks:
+  project_network:
+    name: pizza_network
