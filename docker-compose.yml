@@ -73,20 +73,20 @@ services:
         - project_network
         
 # MySQL
-    mysql:
-      container_name: mysql_pizza_server
-      command: --default-authentication-plugin=mysql_native_password
-      build:
-        context: ./env/docker/mysql
-      volumes:
-        - ${DATA_PATH_HOST}/db-data:/var/lib/mysql/data
-      environment:
-        - MYSQL_DATABASE=${MYSQL_DB}
-        - MYSQL_USER=${MYSQL_USER}
-        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      networks:
-        - project_network
+#    mysql:
+#      container_name: mysql_pizza_server
+#      command: --default-authentication-plugin=mysql_native_password
+#      build:
+#        context: ./env/docker/mysql
+#      volumes:
+#        - ${DATA_PATH_HOST}/db-data:/etc/mysql/my.cnf
+#      environment:
+#        - MYSQL_DATABASE=${MYSQL_DB}
+#        - MYSQL_USER=${MYSQL_USER}
+#        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+#        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+#      networks:
+#        - project_network
 
 volumes:
   mysql:
