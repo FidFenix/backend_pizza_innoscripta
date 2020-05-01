@@ -53,21 +53,6 @@ class User extends BaseModel implements
         'password', 'remember_token', 'email_verified_at', 'primary_role',
     ];
 
-    /** 
-    * Run migracioon
-    */
-    public function up()
-    {
-        Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('user_id');
-            $table->primary('user_id');
-            $table->string('name');
-            $table->string('email');
-            $table->string('password');
-            $table->string('primary_role');           
-            $table->timestamps();
-        });
-    }
     /**
      * Model's boot function
      */

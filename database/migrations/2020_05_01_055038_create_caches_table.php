@@ -4,10 +4,10 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateInvoiceDetailsTable extends Migration
+class CreateCachesTable extends Migration
 {
 
-    const TABLE_NAME = 'invoice_details';
+    const TABLE_NAME = 'caches';
 
     /**
      * Run the migrations.
@@ -17,16 +17,9 @@ class CreateInvoiceDetailsTable extends Migration
     public function up()
     {
         Schema::create(static::TABLE_NAME, function (Blueprint $table) {
-            $table->uuid('invoicedetail_id');
-            $table->primary('invoicedetail_id');
-            $table->string('id');
-            $table->integer('quantity');
-            $table->integer('price');
-            $table->string('imageUrl');
-            $table->string('name');
-            $table->uuid('invoice_id');
-            $table->timestamps();
-            // $table->softDeletes();
+            $table->string('key')->unique();
+            $table->text('value');
+            $table->integer('expiration');
         });
     }
 

@@ -4,12 +4,12 @@ namespace App\Models;
 
 use App\Transformers\BaseTransformer;
 
-class InvoiceDetails extends BaseModel
+class Invoice extends BaseModel
 {
     /**
      * @var string UUID key of the resource
      */
-    public $primaryKey = 'invoicedetail_id';
+    public $primaryKey = 'invoice_id';
 
     /**
      * @var null|array What relations should one model of this entity be returned with, from a relevant controller
@@ -28,9 +28,9 @@ class InvoiceDetails extends BaseModel
     public static $transformer = null;
 
     /**
-     * @var array The attributes that are mass assignable.
+     * @var array The attributes that are mass assignable.s
      */
-    protected $fillable = ['id','quantity', 'price', 'imageUrl', 'name','invoice_id'];
+    protected $fillable = ['client_ip', 'email', 'type', 'address_city','address_country','address_line1','address_zip','brand','country','name','last4','total'];
 
     /**
      * @var array The attributes that should be hidden for arrays and API output

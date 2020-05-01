@@ -23,13 +23,6 @@ Route::get('/', function () {
 
 /** @var \Dingo\Api\Routing\Router $api */
 $api = app('Dingo\Api\Routing\Router');
-$api2 = app('Dingo\Api\Routing\Router');
-
-/*$api2->version('v2', function(Router $api2){
-    $api2->group(['prefix'=> 'hola'], function(Router $api2) {
-        echo 'Hola Fidel';
-    });
-});*/
 
 $api->version('v1', ['middleware' => ['api']], function (Router $api) {
     /*
@@ -90,7 +83,7 @@ $api->version('v1', ['middleware' => ['api']], function (Router $api) {
         $api->group(['prefix' => 'buyitems', 'middleware' => 'check_role:admin'], function (Router $api) {
             //$api->get('/', 'App\Http\Controllers\UserController@getAll');
             //$api->get('/{uuid}', 'App\Http\Controllers\UserController@get');
-            $api->post('/', 'App\Http\Controllers\InvoiceController@post');
+            $api->post('/', 'App\Http\Controllers\InvoiceController@createInvoice');
             //$api->put('/{uuid}', 'App\Http\Controllers\UserController@put');
             //$api->patch('/{uuid}', 'App\Http\Controllers\UserController@patch');
             //$api->delete('/{uuid}', 'App\Http\Controllers\UserController@delete');

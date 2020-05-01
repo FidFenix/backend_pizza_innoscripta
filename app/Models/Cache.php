@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Transformers\BaseTransformer;
 
-class Invoices extends BaseModel
+class Cache extends BaseModel
 {
     /**
      * @var string UUID key of the resource
