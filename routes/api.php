@@ -44,6 +44,8 @@ $api->version('v1', ['middleware' => ['api']], function (Router $api) {
         });
     });
 
+
+
     
     /*
     $api->group(['prefix' => 'auth'], function (Router $api) {
@@ -70,7 +72,7 @@ $api->version('v1', ['middleware' => ['api']], function (Router $api) {
             $api->get('/me', 'App\Http\Controllers\Auth\AuthController@getUser');
         });
 
-        /*
+        /** 
          * Users
          */
         $api->group(['prefix' => 'users', 'middleware' => 'check_role:admin'], function (Router $api) {
@@ -82,7 +84,17 @@ $api->version('v1', ['middleware' => ['api']], function (Router $api) {
             $api->delete('/{uuid}', 'App\Http\Controllers\UserController@delete');
         });
         
-
+        /** 
+         * Pay
+         */
+        $api->group(['prefix' => 'buyitems', 'middleware' => 'check_role:admin'], function (Router $api) {
+            //$api->get('/', 'App\Http\Controllers\UserController@getAll');
+            //$api->get('/{uuid}', 'App\Http\Controllers\UserController@get');
+            $api->post('/', 'App\Http\Controllers\InvoiceController@post');
+            //$api->put('/{uuid}', 'App\Http\Controllers\UserController@put');
+            //$api->patch('/{uuid}', 'App\Http\Controllers\UserController@patch');
+            //$api->delete('/{uuid}', 'App\Http\Controllers\UserController@delete');
+        });
         /*
          * Roles
          */

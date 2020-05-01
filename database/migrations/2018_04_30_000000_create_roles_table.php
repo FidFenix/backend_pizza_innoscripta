@@ -17,11 +17,10 @@ class CreateRolesTable extends Migration
     {
         Schema::create(static::TABLE_NAME, function (Blueprint $table) {
             $table->uuid('role_id');
+            $table->primary('role_id');
 
             $table->string('name')->unique();
             $table->string('description');
-
-            $table->primary('role_id');
 
             $table->timestamps();
             $table->softDeletes();

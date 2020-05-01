@@ -1,7 +1,7 @@
 {
     "name": "specialtactics/laravel-api-boilerplate",
     "description": "An API boilerplate for Laravel",
-    "keywords": ["laravel", "boilerplate", "api", "api boilerplate", "laravel api"],
+    "keywords": ["laravel", "boilerplate", "api", "api", "laravel api"],
     "license": "MIT",
     "type": "project",
     "authors": [

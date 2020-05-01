@@ -61,7 +61,6 @@ class User extends BaseModel implements
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('user_id');
             $table->primary('user_id');
-            $table->index('user_id');
             $table->string('name');
             $table->string('email');
             $table->string('password');

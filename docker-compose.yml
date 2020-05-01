@@ -75,10 +75,11 @@ services:
 # MySQL
     mysql:
       container_name: mysql_pizza_server
+      command: --default-authentication-plugin=mysql_native_password
       build:
         context: ./env/docker/mysql
       volumes:
-        - ${DATA_PATH_HOST}mysqlconf:/etc/mysql/conf.d/conf_mysql.cnf
+        - ${DATA_PATH_HOST}/db-data:/var/lib/mysql/data
       environment:
         - MYSQL_DATABASE=${MYSQL_DB}
         - MYSQL_USER=${MYSQL_USER}
