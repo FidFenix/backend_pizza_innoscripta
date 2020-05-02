@@ -9,7 +9,10 @@ RewriteEngine On
 RewriteRule ^(.*)/$ /$1 [L,R=301]
 
 # Handle Front Controller...
+RewriteCond ${HTTPS} !=on
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^/?(.*) https://%{ec2-18-156-176-169.eu-central-1.compute.amazonaws.com}/$1 [R,L]
 RewriteRule ^ index.php [L]
 </IfModule>
+
