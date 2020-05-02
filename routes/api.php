@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
  * Welcome route - link to any public API documentation here
  */
 Route::get('/', function () {
-    echo 'Welcome to our API';
+    echo 'Welcome to Pizzas App';
 });
 
 /** @var \Dingo\Api\Routing\Router $api */
@@ -79,7 +79,7 @@ $api->version('v1', ['middleware' => ['api']], function (Router $api) {
         
         /** 
          * Pay
-         */
+	 */
         $api->group(['prefix' => 'buyitems', 'middleware' => 'check_role:admin'], function (Router $api) {
             //$api->get('/', 'App\Http\Controllers\UserController@getAll');
             //$api->get('/{uuid}', 'App\Http\Controllers\UserController@get');
@@ -88,7 +88,7 @@ $api->version('v1', ['middleware' => ['api']], function (Router $api) {
             //$api->patch('/{uuid}', 'App\Http\Controllers\UserController@patch');
             //$api->delete('/{uuid}', 'App\Http\Controllers\UserController@delete');
         });
-        /*
+        /**
          * Roles
          */
         $api->group(['prefix' => 'roles'], function (Router $api) {
