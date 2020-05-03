@@ -20,11 +20,11 @@ This project was bootstrapped with Composer for [Laravel PHP](https://laravel.co
     * Install Docker and Docker-compose from  [Docker](https://www.docker.com/)<br/>
     * Create directories under storage directory<br/>
     
-    ├── storage
-        ├── framework
-            ├── cache
-            ├── sessions
-            ├── testing
+    ├── storage<br/>
+        ├── framework<br/>
+            ├── cache<br/>
+            ├── sessions<br/>
+            ├── testing<br/>
 
     * Give permissions for execution  to the project directory<br/>
     * Execute command `composer install`<br/>
