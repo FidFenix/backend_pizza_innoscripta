@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 use App\Models\Invoice;
 use App\Models\InvoiceDetails;
 use App\Models\User;
-
 
 use Response;
 
@@ -21,17 +21,9 @@ class InvoiceController extends Controller
 
     public function createInvoice(Request $request) 
     {
-
         try{
-            /* Implementation using Cache for Security Reasons, but this a test of 5 days
-            $authHeader = $request->header('Authorization');
-            $token = trim(substr($authHeader, 6));
-            if (Cache::has($token)) {
-                $user_id = Cache::get($token);
-            }else {
-                return Response::json(['message' => 'Security Problems'], 500);
-            }
-             */
+
+            $user_id = $this->getUserIdFromToken($request);
 
             $data = json_decode($request->getContent(), true);
             $userinfo = $data["userinfo"];
@@ -49,9 +41,11 @@ class InvoiceController extends Controller
             $invoice->name = $userinfo["card"]["name"];
             $invoice->last4 = $userinfo["card"]["last4"];
             $invoice->total = $data["price"];
-            $invoice->user_id = $user["data"]["data"]["id"];
+            $invoice->user_id = $user_id;
+
+            $invoice = $invoice->toArray();
             
-            $newInvoice = Invoice::create($invoice->toArray());
+            $newInvoice = Invoice::create($invoice);
             
             //Now creating the items to store as details
             $items = $data["items"];
@@ -63,7 +57,8 @@ class InvoiceController extends Controller
                 $newInvoiceDetail->imageUrl = $item["imageUrl"];
                 $newInvoiceDetail->name = $item["name"];
                 $newInvoiceDetail->invoice_id = $newInvoice->invoice_id;
-                InvoiceDetails::create($newInvoiceDetail->toArray());
+                $newInvoiceDetail = $newInvoiceDetail->toArray();
+                InvoiceDetails::create($newInvoiceDetail);
             }
             
             return Response::json(['message' => 'Successful Payment'], 200);
@@ -76,12 +71,19 @@ class InvoiceController extends Controller
 
     public function getBuys(Request $request) {
 
-        $data = json_decode($request->getContent(), true);
-        $user = $data["user"];
-        $user_id = $user["data"]["data"]["id"];
+        $user_id = $this->getUserIdFromToken($request);
         $data = Invoice::where("user_id", "=", $user_id)->get(['invoice_id', 'email', 'address_city','address_line1', 'last4','total','name','address_zip', 'created_at']);
         return Response::json(['response' => $data], 200);
-        //return $this->response->item($data,'sdsd')->setStatusCode(200);
-        //$buys = DB::table('invoices')->select('league_name')->join('countries', 'countries.country_id', '=', 'leagues.country_id')->where('countries.country_name', $country)->get();
+    }
+
+    public function getUserIdFromToken($request) {
+        $authHeader = $request->header('Authorization');
+        $token = trim(substr($authHeader, 6));
+        if (Cache::has($token)) {
+            $user_id = Cache::get($token);
+            return $user_id;
+        }else {
+            return Response::json(['message' => 'Security Problems'], 500);
+        }
     }
 }

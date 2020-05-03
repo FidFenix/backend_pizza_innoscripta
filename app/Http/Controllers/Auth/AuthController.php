@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Specialtactics\L5Api\Http\Controllers\Features\JWTAuthenticationTrait;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
-//use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Response;
 
@@ -33,7 +33,9 @@ class AuthController extends Controller
 
             //Storing user id and token in the cache
             $user_id = User::where("email", "=", $login)->get(['user_id']);
-            return $this->respondWithToken($user_id[0], $token);
+            $user = User::find($user_id[0]);
+            $user_id = $user[0]->getJWTIdentifier();
+            return $this->respondWithToken($user_id, $token);
  
         }catch(Exception $e) {
             return Response::json(['message' => 'Internal Server Error'], 500);
@@ -88,8 +90,7 @@ class AuthController extends Controller
         $tokenResponse->jwt = $token;
         $tokenResponse->token_type = 'bearer';
         $tokenResponse->expires_in = auth()->factory()->getTTL();
-        $tokenResponse->id = $user_id;
-        //Cache::put($token, $user_id);
+        Cache::put($token, $user_id);
         return $this->response->item($tokenResponse, $this->getTransformer())->setStatusCode(200);
     }
 }

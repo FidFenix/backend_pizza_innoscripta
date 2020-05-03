@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-//use Illuminate\Support\Facades\Cache; Goos idea to use Cache, but This is a test of 5 days
+use Illuminate\Support\Facades\Cache;
 
 use App\Models\User;
 use Response;
@@ -36,8 +36,7 @@ class UserController extends Controller
         $tokenResponse->jwt = $token;
         $tokenResponse->token_type = 'bearer';
         $tokenResponse->expires_in = auth()->factory()->getTTL();
-        //Cache::put($token, $user_id);
-        $tokenResponse->id = $user_id;
+        Cache::put($token, $user_id);
         return $this->response->item($tokenResponse, $this->getTransformer())->setStatusCode(200);
     }
 }

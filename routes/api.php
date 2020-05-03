@@ -70,16 +70,11 @@ $api->version('v1', ['middleware' => ['api']], function (Router $api) {
          * Pay
          */
         $api->group(['prefix' => 'buyitems', 'middleware' => 'check_role:admin'], function (Router $api) {
-            //$api->get('/', 'App\Http\Controllers\UserController@getAll');
-            //$api->get('/{uuid}', 'App\Http\Controllers\UserController@get');
             $api->post('/', 'App\Http\Controllers\InvoiceController@createInvoice');
-            //$api->put('/{uuid}', 'App\Http\Controllers\UserController@put');
-            //$api->patch('/{uuid}', 'App\Http\Controllers\UserController@patch');
-            //$api->delete('/{uuid}', 'App\Http\Controllers\UserController@delete');
         });
 
         $api->group(['prefix' => 'buys', 'middleware' => 'check_role:admin'], function (Router $api) {
-            $api->post('/', 'App\Http\Controllers\InvoiceController@getBuys');
+            $api->get('/', 'App\Http\Controllers\InvoiceController@getBuys');
         });
         /** 
          * Roles
