@@ -25,7 +25,7 @@ Route::get('/', function () {
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', ['middleware' => ['api']], function (Router $api) {
-    /*
+    /** 
      * Authentication
      */
     $api->group(['prefix' => 'auth'], function (Router $api) {
@@ -37,19 +37,8 @@ $api->version('v1', ['middleware' => ['api']], function (Router $api) {
         });
     });
 
-
-
     
-    /*
-    $api->group(['prefix' => 'auth'], function (Router $api) {
-        $api->group(['prefix' => 'jwt'], function (Router $api) {
-            $api->get('/token', function(){
-                echo api;
-            });
-        });
-    });
-    */
-    /*
+    /**
      * Authenticated routes
      */
     $api->group(['middleware' => ['api.auth']], function (Router $api) {
@@ -88,7 +77,11 @@ $api->version('v1', ['middleware' => ['api']], function (Router $api) {
             //$api->patch('/{uuid}', 'App\Http\Controllers\UserController@patch');
             //$api->delete('/{uuid}', 'App\Http\Controllers\UserController@delete');
         });
-        /*
+
+        $api->group(['prefix' => 'buys', 'middleware' => 'check_role:admin'], function (Router $api) {
+            $api->post('/', 'App\Http\Controllers\InvoiceController@getBuys');
+        });
+        /** 
          * Roles
          */
         $api->group(['prefix' => 'roles'], function (Router $api) {

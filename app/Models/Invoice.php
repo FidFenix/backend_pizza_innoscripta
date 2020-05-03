@@ -30,7 +30,7 @@ class Invoice extends BaseModel
     /**
      * @var array The attributes that are mass assignable.s
      */
-    protected $fillable = ['client_ip', 'email', 'type', 'address_city','address_country','address_line1','address_zip','brand','country','name','last4','total'];
+    protected $fillable = ['client_ip', 'email', 'type', 'address_city','address_country','address_line1','address_zip','brand','country','name','last4','total', 'user_id'];
 
     /**
      * @var array The attributes that should be hidden for arrays and API output

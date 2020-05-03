@@ -52,9 +52,10 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
 $response = $kernel->handle(
+    
     $request = Illuminate\Http\Request::capture()
 );
-
+#$response->header("Access-Control-Allow-Origin", "http://ec2-3-124-217-139.eu-central-1.compute.amazonaws.com");
 $response->send();
 
 $kernel->terminate($request, $response);

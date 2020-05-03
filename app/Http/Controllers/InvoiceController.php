@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cache;
 
 use App\Models\Invoice;
 use App\Models\InvoiceDetails;
 use App\Models\User;
+
 
 use Response;
 
@@ -21,8 +23,19 @@ class InvoiceController extends Controller
     {
 
         try{
+            /* Implementation using Cache for Security Reasons, but this a test of 5 days
+            $authHeader = $request->header('Authorization');
+            $token = trim(substr($authHeader, 6));
+            if (Cache::has($token)) {
+                $user_id = Cache::get($token);
+            }else {
+                return Response::json(['message' => 'Security Problems'], 500);
+            }
+             */
+
             $data = json_decode($request->getContent(), true);
             $userinfo = $data["userinfo"];
+            $user = $data["user"];
             $invoice = new Invoice;
             $invoice->client_ip = $userinfo["client_ip"];
             $invoice->email = $userinfo["email"];
@@ -36,6 +49,7 @@ class InvoiceController extends Controller
             $invoice->name = $userinfo["card"]["name"];
             $invoice->last4 = $userinfo["card"]["last4"];
             $invoice->total = $data["price"];
+            $invoice->user_id = $user["data"]["data"]["id"];
             
             $newInvoice = Invoice::create($invoice->toArray());
             
@@ -52,11 +66,22 @@ class InvoiceController extends Controller
                 InvoiceDetails::create($newInvoiceDetail->toArray());
             }
             
-            return Response::json(['success' => 'Successful Payment'], 200);
+            return Response::json(['message' => 'Successful Payment'], 200);
 
         } catch(Exception $e) {
-            return Response::json(['errors' => 'Please fill all the Form'], 400);
+            return Response::json(['message' => 'Please fill all the Form'], 400);
         }
 
+    }
+
+    public function getBuys(Request $request) {
+
+        $data = json_decode($request->getContent(), true);
+        $user = $data["user"];
+        $user_id = $user["data"]["data"]["id"];
+        $data = Invoice::where("user_id", "=", $user_id)->get(['invoice_id', 'email', 'address_city','address_line1', 'last4','total','name','address_zip', 'created_at']);
+        return Response::json(['response' => $data], 200);
+        //return $this->response->item($data,'sdsd')->setStatusCode(200);
+        //$buys = DB::table('invoices')->select('league_name')->join('countries', 'countries.country_id', '=', 'leagues.country_id')->where('countries.country_name', $country)->get();
     }
 }
