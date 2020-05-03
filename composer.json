@@ -16,6 +16,7 @@
         "fruitcake/laravel-cors": "^1.0",
         "laravel/framework": "^6",
         "laravel/tinker": "^1.0",
+        "spatie/laravel-cors": "^1.6",
         "specialtactics/l5-api": "^1.1"
     },
     "require-dev": {

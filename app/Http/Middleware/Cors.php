@@ -7,10 +7,11 @@ class Cors
 {
     public function handle($request, Closure $next)
     {
-        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Origin","*");
         $headers = [
-            'Access-Control-Allow-Methods' => 'POST, GET, OPTIONS, PUT, DELETE',
+            'Access-Control-Allow-Methods' => 'OPTIONS, POST, GET , PUT, DELETE',
 	    'Access-Control-Allow-Headers' => 'Content-Type, X-Auth-Token, Origin, Authorization',
+	    'Content-Type' => 'application/json',
         ];
         if ($request->getMethod() == "OPTIONS") {
             return response()->json('OK', 200, $headers);
